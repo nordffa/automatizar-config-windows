@@ -1,3 +1,6 @@
+# Ativa a execucao de scripts
+Set-ExecutionPolicy Unrestricted
+
 # Define o plano de energia para "Alto desempenho"
 powercfg /s 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
 
@@ -21,6 +24,15 @@ Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer
 # Oculta a lixeira
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" -Name '{645FF040-5081-101B-9F08-00AA002F954E}' -Value 1
 
+# Oculta o botao "Visao de Tarefas"
+Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name 'ShowTaskViewButton' -Type 'DWord' -Value 0
+
+# Desativa o "Noticias e Interesses"
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Feeds" /v "ShellFeedsTaskbarViewMode" /t REG_DWORD /d 2 /f
+
+# Oculta a barra de pesquisa
+Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name 'SearchboxTaskbarMode' -Value 0 -Type DWord -Force
+
 # Instala os seguintes aplicativos
 winget install File-New-Project.EarTrumpet
 winget install Google.Chrome
@@ -34,6 +46,8 @@ winget install EpicGames.EpicGamesLauncher
 winget install Microsoft.VCRedist.2015+.x64
 winget install Microsoft.VCRedist.2015+.x86
 winget install Microsoft.VisualStudioCode
+winget install Git.Git
+winget install GitHub.GitHubDesktop
 
 # Desinstala os seguintes aplicativos (pré instalados no sistema)
 winget uninstall Microsoft.OneDrive
