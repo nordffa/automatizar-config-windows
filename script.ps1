@@ -18,6 +18,9 @@ Stop-Process -Name explorer -Force
 # Ativa o uso de ícones pequenos na barra de tarefas
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarSmallIcons -Value 1
 
+# Oculta a lixeira
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" -Name '{645FF040-5081-101B-9F08-00AA002F954E}' -Value 1
+
 # Instala os seguintes aplicativos
 winget install File-New-Project.EarTrumpet
 winget install Google.Chrome
@@ -75,6 +78,15 @@ Get-AppxPackage *Microsoft.XboxSpeechToTextOverlay* | Remove-AppxPackage
 Get-AppxPackage *Microsoft.YourPhone* | Remove-AppxPackage
 Get-AppxPackage *Microsoft.ZuneMusic* | Remove-AppxPackage
 Get-AppxPackage *Microsoft.ZuneVideo* | Remove-AppxPackage
+
+# Reinicia o serviço do Windows Explorer para aplicar as alterações
+Stop-Process -Name explorer -Force
+
+# Executa o aplicativo Limpeza de Disco como administrador
+Start-Process -FilePath "cleanmgr.exe" -Verb RunAs
+
+# Verifica os arquivos do sistema
+sfc /scannow
 
 cls
 pause
